@@ -386,3 +386,4 @@ unit_weights <- function(mmMatrix, i,normData, construct_scores) {
   # matrix(1,nrow = sum(mmMatrix[,1] == i), ncol = 1)
   return(matrix(1,nrow = sum(mmMatrix[,1] == i), ncol = 1))
 }
+
