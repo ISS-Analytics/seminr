@@ -154,7 +154,7 @@ as.reflective.construct <- function(x, ...) {
 as.reflective.interaction <- function(x, ...) {
   x
 }
-
+#' @export
 as.reflective.matrix <- function(x, ...) {
   # TODO: give interaction mmMatrix column names so we can do: from[, "type"]
   x[, 3] <- "C"
