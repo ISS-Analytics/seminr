@@ -1212,7 +1212,7 @@ dot_component_mm <- function(model, theme) {
 
   # we use mmMatrix because model$constructs does not contain HOCs
   if (is.null(model$hoc)) {
-    mm_count <- length(intersect(unique(model$smMatrix),unique(model$mmMatrix[,1 ])))
+    mm_count <- length(intersect(construct_names(model$smMatrix),unique(model$mmMatrix[,1 ])))
   } else {
     mm_count <- length(intersect(unique(c(model$smMatrix, model$first_stage_model$smMatrix)),unique(model$mmMatrix[,1 ])))
   }
@@ -1670,7 +1670,3 @@ dot <- "digraph {
 }"
 
 #DiagrammeR::grViz(dot)
-
-
-
-

@@ -298,23 +298,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -554,8 +548,8 @@ to the mobile phone market (Tenenhaus et al. 2005).</p>
 <p>You can see a description and sample of what is in
 <code>mobi</code>:</p>
 <pre class="r"><code>dim(mobi)
-#&gt; [1] 250  24
-head(mobi)
+#&gt; [1] 250  24</code></pre>
+<pre class="r"><code>head(mobi)
 #&gt;   CUEX1 CUEX2 CUEX3 CUSA1 CUSA2 CUSA3 CUSCO CUSL1 CUSL2 CUSL3 IMAG1 IMAG2 IMAG3
 #&gt; 1     7     7     6     6     4     7     7     6     5     6     7     5     5
 #&gt; 2    10    10     9    10    10     8    10    10     2    10    10     9    10
@@ -858,14 +852,14 @@ mobi_pls &lt;- estimate_pls(
   inner_weights = path_weighting
 )
 #&gt; Generating the seminr model
-#&gt; All 250 observations are valid.
-
+#&gt; All 250 observations are valid.</code></pre>
+<pre class="r"><code>
 mobi_cfa &lt;- estimate_cfa(
   data = mobi,
   measurement_model = as.reflective(mobi_mm)
 )
-#&gt; Generating the seminr model for CFA
-
+#&gt; Generating the seminr model for CFA</code></pre>
+<pre class="r"><code>
 mobi_cbsem &lt;- estimate_cbsem(
   data = mobi,
   measurement_model = as.reflective(mobi_mm),
@@ -969,7 +963,7 @@ and <span class="math inline">\(rho_{A}\)</span> (Dijkstra and Henseler
 </ol>
 <pre class="r"><code>summary(mobi_pls)
 #&gt; 
-#&gt; Results from  package seminr (2.3.1)
+#&gt; Results from  package seminr (2.3.3)
 #&gt; 
 #&gt; Path Coefficients:
 #&gt;                   Satisfaction
@@ -1128,13 +1122,13 @@ mobi_pls &lt;- estimate_pls(data = mobi,
                         measurement_model = mobi_mm,
                         structural_model = mobi_sm)
 #&gt; Generating the seminr model
-#&gt; All 250 observations are valid.
-# Load data, assemble model, and bootstrap
+#&gt; All 250 observations are valid.</code></pre>
+<pre class="r"><code># Load data, assemble model, and bootstrap
 boot_seminr_model &lt;- bootstrap_model(seminr_model = mobi_pls,
                                     nboot = 50, cores = 2, seed = NULL)
 #&gt; Bootstrapping model using seminr...
-#&gt; SEMinR Model successfully bootstrapped
-
+#&gt; SEMinR Model successfully bootstrapped</code></pre>
+<pre class="r"><code>
 # Calculate the 5% confidence interval for mediated path Image -&gt; Expectation -&gt; Satisfaction
 specific_effect_significance(boot_seminr_model = boot_seminr_model,
                              from = &quot;Image&quot;,
@@ -1142,19 +1136,19 @@ specific_effect_significance(boot_seminr_model = boot_seminr_model,
                              to = &quot;Complaints&quot;,
                              alpha = 0.05)
 #&gt;  Original Est. Bootstrap Mean   Bootstrap SD        T Stat.        2.5% CI 
-#&gt;    0.016670348    0.016265147    0.012272794    1.358317286   -0.002133377 
+#&gt;     0.01667035     0.01561807     0.01544419     1.07939257    -0.01212574 
 #&gt;       97.5% CI 
-#&gt;    0.040885218
-
+#&gt;     0.03925553</code></pre>
+<pre class="r"><code>
 # Calculate the 10% confidence interval for direct path Image -&gt; Satisfaction
 specific_effect_significance(boot_seminr_model = boot_seminr_model,
                              from = &quot;Image&quot;,
                              to = &quot;Satisfaction&quot;,
                              alpha = 0.10)
 #&gt;  Original Est. Bootstrap Mean   Bootstrap SD        T Stat.          5% CI 
-#&gt;     0.17873950     0.18074797     0.04636369     3.85516114     0.10992500 
+#&gt;     0.17873950     0.17859785     0.04876216     3.66553730     0.09673596 
 #&gt;         95% CI 
-#&gt;     0.26444442</code></pre>
+#&gt;     0.26091905</code></pre>
 </div>
 <div id="reporting-data-descriptive-statistics-and-construct-descriptive-statistics" class="section level2">
 <h2>Reporting data descriptive statistics and construct descriptive
@@ -1199,8 +1193,8 @@ pls_model &lt;- estimate_pls(
 #&gt; Generating the seminr model
 #&gt; Generating the seminr model
 #&gt; All 250 observations are valid.
-#&gt; All 250 observations are valid.
-boot_estimates &lt;- bootstrap_model(pls_model, nboot = 100, cores = 1)
+#&gt; All 250 observations are valid.</code></pre>
+<pre class="r"><code>boot_estimates &lt;- bootstrap_model(pls_model, nboot = 100, cores = 1)
 #&gt; Bootstrapping model using seminr...
 #&gt; SEMinR Model successfully bootstrapped</code></pre>
 <p>When we have a model, we can plot it and save the plot to a file.</p>

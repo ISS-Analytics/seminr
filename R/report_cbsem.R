@@ -11,7 +11,7 @@ summary.cbsem_model <- function(object, na.print=".", digits=3, alpha=0.05,...) 
 
   model_summary$quality <- list(
     fit = summarize_fit(object$lavaan_output),
-    reliability = rhoC_AVE(object),
+    reliability = rhoC_AVE_cbsem_model(object),
     antecedent_vifs = regr_vifs
   )
 
