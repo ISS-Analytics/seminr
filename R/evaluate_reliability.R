@@ -80,11 +80,12 @@ rho_A <- function(seminr_model, constructs) {
 # and Applications. Biometrical Journal 29 (6).
 # Average Variance Extracted as per:  Fornell, C. and D. F. Larcker (February 1981). Evaluating
 # structural equation models with unobservable variables and measurement error, Journal of Marketing Research, 18, pp. 39-5
-# rhoC_AVE <- function(x, ...) {
-#   UseMethod("rhoC_AVE")
-# }
+rhoC_AVE <- function(x, ...) {
+  UseMethod("rhoC_AVE")
+}
 
-rhoC_AVE_pls_model <- function(pls_model, constructs){
+#' @export
+rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(pls_model, constructs) {
   dgr <- matrix(NA, nrow=length(constructs), ncol=2)
   rownames(dgr) <- constructs
   colnames(dgr) <- c("rhoC", "AVE")
