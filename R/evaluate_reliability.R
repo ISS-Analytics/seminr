@@ -84,7 +84,11 @@ rhoC_AVE <- function(x, constructs = NULL) {
   UseMethod("rhoC_AVE")
 }
 
-# rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(pls_model, constructs) {
+#' Get rhoC and AVE for a PLS model estimated with \code{estimate_pls}
+#' @param x Estimated \code{pls_model} object.
+#' @param constructs Vector containing the names of the constructs to calculate rhoC and AVE for; if NULL, all constructs are used.
+#' @return A matrix containing the rhoC and AVE metrics for each construct.
+#'
 #' @export
 rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(x, constructs = NULL) {
   pls_model <- x
@@ -111,14 +115,30 @@ rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(x, constructs = NUL
   return(dgr)
 }
 
-# Assumes factor loadings are in model:
-# lavaan::inspect(fit,what="std")$lambda
-rhoC_AVE_cbsem_model <- function(seminr_model) {
-  dgr <- matrix(NA, nrow=length(seminr_model$constructs), ncol=2)
-  rownames(dgr) <- seminr_model$constructs
+#' seminr rhoC_AVE() function
+#'
+#' Get rhoC and AVE for a CBSEM model estimated with \code{estimate_cbsem}
+#'
+#' @param x Estimated \code{cbsem_model} object.
+#'
+#' @param constructs Vector containing the names of the constructs to calculate rhoC and AVE for; if NULL, all constructs are used.
+#'
+#' @return A matrix containing the rhoC and AVE metrics for each construct.
+#'
+#' @export
+rhoC_AVE.cbsem_model <- function(x, constructs = NULL) {
+  # Assumes factor loadings are in model:
+  # lavaan::inspect(fit,what="std")$lambda
+  cbsem_model <- x
+  if (is.null(constructs)) {
+    constructs <- cbsem_model$constructs
+  }
+
+  dgr <- matrix(NA, nrow=length(constructs), ncol=2)
+  rownames(dgr) <- constructs
   colnames(dgr) <- c("rhoC", "AVE")
-  for(i in seminr_model$constructs) {
-    loadings <- seminr_model$factor_loadings[, i]
+  for(i in constructs) {
+    loadings <- cbsem_model$factor_loadings[, i]
     ind <- which(loadings != 0)
     if(length(ind) == 1) {
       dgr[i, 1:2] <- 1
