@@ -75,20 +75,25 @@ rho_A <- function(seminr_model, constructs) {
 }
 # End rho_A function
 
-# RhoC and AVE
-# Dillon-Goldstein's Rho as per: Dillon, W. R, and M. Goldstein. 1987. Multivariate Analysis: Methods
-# and Applications. Biometrical Journal 29 (6).
-# Average Variance Extracted as per:  Fornell, C. and D. F. Larcker (February 1981). Evaluating
-# structural equation models with unobservable variables and measurement error, Journal of Marketing Research, 18, pp. 39-5
+#' seminr rhoC_AVE() function
+#'
+#' Get rhoC and AVE for a CFA model estimated with \code{estimate_pls}, \code{estimate_cbsem} or \code{estimate_cfa}.
+#' Dillon-Goldstein's Rho as per: Dillon, W. R, and M. Goldstein. 1987. Multivariate Analysis: Methods
+#' and Applications. Biometrical Journal 29 (6).
+#' Average Variance Extracted as per:  Fornell, C. and D. F. Larcker (February 1981). Evaluating
+#' structural equation models with unobservable variables and measurement error, Journal of Marketing Research, 18, pp. 39-5
+#'
+#' @param x Estimated \code{seminr_model} object.
+#'
+#' @param constructs Vector containing the names of the constructs to calculate rhoC and AVE for; if NULL, all constructs are used.
+#'
+#' @return A matrix containing the rhoC and AVE metrics for each construct.
+#'
+#' @export
 rhoC_AVE <- function(x, constructs = NULL) {
   UseMethod("rhoC_AVE")
 }
 
-#' Get rhoC and AVE for a PLS model estimated with \code{estimate_pls}
-#' @param x Estimated \code{pls_model} object.
-#' @param constructs Vector containing the names of the constructs to calculate rhoC and AVE for; if NULL, all constructs are used.
-#' @return A matrix containing the rhoC and AVE metrics for each construct.
-#'
 #' @export
 rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(x, constructs = NULL) {
   pls_model <- x
@@ -115,20 +120,9 @@ rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(x, constructs = NUL
   return(dgr)
 }
 
-#' seminr rhoC_AVE() function
-#'
-#' Get rhoC and AVE for a CBSEM model estimated with \code{estimate_cbsem}
-#'
-#' @param x Estimated \code{cbsem_model} object.
-#'
-#' @param constructs Vector containing the names of the constructs to calculate rhoC and AVE for; if NULL, all constructs are used.
-#'
-#' @return A matrix containing the rhoC and AVE metrics for each construct.
-#'
 #' @export
 rhoC_AVE.cbsem_model <- function(x, constructs = NULL) {
-  # Assumes factor loadings are in model:
-  # lavaan::inspect(fit,what="std")$lambda
+  # Assumes factor loadings are in model: lavaan::inspect(fit,what="std")$lambda
   cbsem_model <- x
   if (is.null(constructs)) {
     constructs <- cbsem_model$constructs
@@ -151,12 +145,18 @@ rhoC_AVE.cbsem_model <- function(x, constructs = NULL) {
   return(dgr)
 }
 
-rhoC_AVE_cfa_model <-  function(seminr_model) {
-  dgr <- matrix(NA, nrow=length(seminr_model$constructs), ncol=2)
-  rownames(dgr) <- seminr_model$constructs
+#' @export
+rhoC_AVE.cfa_model <- function(x, constructs = NULL) {
+  cfa_model <- x
+  if (is.null(constructs)) {
+    constructs <- cfa_model$constructs
+  }
+
+  dgr <- matrix(NA, nrow=length(constructs), ncol=2)
+  rownames(dgr) <- constructs
   colnames(dgr) <- c("rhoC", "AVE")
-  for(i in seminr_model$constructs) {
-    loadings <- seminr_model$factor_loadings[, i]
+  for(i in constructs) {
+    loadings <- cfa_model$factor_loadings[, i]
     ind <- which(loadings != 0)
     if(length(ind) == 1) {
       dgr[i, 1:2] <- 1
