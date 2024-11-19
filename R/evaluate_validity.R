@@ -89,7 +89,7 @@ fl_criteria_table <- function(seminr_model, model_constructs) {
   # }
   table <- stats::cor(model_constructs$construct_scores)
   table[upper.tri(table)] <- NA
-  diag(table) <- sqrt(rhoC_AVE(seminr_model, model_constructs$construct_names)[,"AVE"])
+  diag(table) <- sqrt(rhoC_AVE(seminr_model, constructs = model_constructs$construct_names)[,"AVE"])
   comment(table) <- "FL Criteria table reports square root of AVE on the diagonal and construct correlations on the lower triangle."
   convert_to_table_output(table)
 }

@@ -80,34 +80,19 @@ rho_A <- function(seminr_model, constructs) {
 # and Applications. Biometrical Journal 29 (6).
 # Average Variance Extracted as per:  Fornell, C. and D. F. Larcker (February 1981). Evaluating
 # structural equation models with unobservable variables and measurement error, Journal of Marketing Research, 18, pp. 39-5
-rhoC_AVE <- function(x, ...) {
+rhoC_AVE <- function(x, constructs = NULL) {
   UseMethod("rhoC_AVE")
 }
 
+# rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(pls_model, constructs) {
 #' @export
-rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(pls_model, constructs) {
-  dgr <- matrix(NA, nrow=length(constructs), ncol=2)
-  rownames(dgr) <- constructs
-  colnames(dgr) <- c("rhoC", "AVE")
-  for(i in constructs){
-    loadings <- pls_model$outer_loadings[, i]
-    ind <- which(loadings != 0)
-    if(measure_mode(i, pls_model$mmMatrix) %in% c("A", "B", "HOCA", "HOCB", "C", "UNIT")) {
-      if(length(ind) == 1) {
-        dgr[i, 1:2] <- 1
-      } else {
-        lambdas <- loadings[ind]
-        dgr[i, 1] <- compute_rhoC(lambdas)
-        dgr[i, 2] <- compute_AVE(lambdas)
-      }
-    }
+rhoC_AVE.pls_model <- rhoC_AVE.boot_seminr_model <- function(x, constructs = NULL) {
+  pls_model <- x
+  if (is.null(constructs)) {
+    constructs <- pls_model$constructs
   }
-  return(dgr)
-}
 
-rhoC_AVE_boot_seminr_model <- function(pls_model, constructs){
   dgr <- matrix(NA, nrow=length(constructs), ncol=2)
-
   rownames(dgr) <- constructs
   colnames(dgr) <- c("rhoC", "AVE")
   for(i in constructs){

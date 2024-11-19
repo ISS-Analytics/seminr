@@ -13,7 +13,7 @@ reliability <- function(seminr_model) {
   #get HOC
   model_constructs <- constructs_in_model(seminr_model)
   alpha <- cronbachs_alpha(seminr_model, model_constructs$construct_names)
-  mat1 <- rhoC_AVE(pls_model = seminr_model, constructs = model_constructs$construct_names)
+  mat1 <- rhoC_AVE(seminr_model, constructs = model_constructs$construct_names)
   mat2 <- rho_A(seminr_model, model_constructs$construct_names)
   table <- cbind(alpha, mat1, mat2)
   colnames(table) <- c("alpha", "rhoC",   "AVE",  "rhoA")
