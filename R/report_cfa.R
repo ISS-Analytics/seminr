@@ -7,7 +7,7 @@ summary.cfa_model <- function(object, na.print=".", digits=3, alpha=0.05,...) {
   model_summary     <- summarize_cb_measurement(object, alpha=alpha)
   model_summary$quality <- list(
     fit = summarize_fit(object$lavaan_output),
-    reliability = rhoC_AVE_cfa_model(object)
+    reliability = rhoC_AVE(object)
   )
 
   class(model_summary) <- c("summary.cfa_model", class(model_summary))
