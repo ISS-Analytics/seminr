@@ -1,3 +1,6 @@
+# Thanks to @PascalHessler for raising issue #357 about the Wald test and
+# providing starter code to arrive at these functions.
+
 vcov.boot_seminr_model <- function(boot_obj, endogenous = NULL) {
   sm <- boot_obj$smMatrix
   if (!is.null(endogenous)) {
@@ -66,4 +69,14 @@ coef.boot_seminr_model <- function(boot_obj, endogenous = NULL) {
 
 # b <- coef.boot_seminr_model(boot_obj = boot_pls, endogenous = "LOY")
 # S <- vcov.boot_seminr_model(boot_obj = boot_pls, endogenous = "LOY")
-# wald.test(b=b, Sigma=S, Terms=c(2,3))
+
+# # Tests the joined hypotheses of 'SAT->LOY' == 0 and 'COM->LOY' == 0
+# # Corresponding L Matrix = [0 1 0, 0 0 1]
+# wald.test(b = b, Sigma = S, Terms = c(2, 3))
+
+# # If you want to test if to pathes are equal to each other you need to provide the L argument representing the linear combinations
+# # of the coefficients to be tested
+# # For example: 'SAT->LOY'=='COM->LOY'  would correspond to a Matrix [0  1 -1]
+# wald.test(b = b, Sigma = S, L = matrix(c(0, 1, -1), nrow = 1))
+
+# # More on L matrix at: https://cran.r-project.org/web/packages/clubSandwich/vignettes/Wald-tests-in-clubSandwich.html
